@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<blogentry>
+<author>John Doe</author>
+<title>The state of writing today</title>
+<date>2023-12-05</date>
+<teasertext>This is the first paragraph of a lengthy blog entry. It will inform the user about what the entry is about.</teasertext>
+<content>Here the entirety of the blog entry will reside.</content>
+ </blogentry>

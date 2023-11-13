@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<navigation>
+    <entry>
+        <title>Welcome</title>
+        <variable>welcome</variable>
+        <filename>welcome.html</filename>
+    </entry>
+   <entry>
+        <title>About me</title>
+        <variable>about</variable>
+        <filename>about.html</filename>
+    </entry>
+    <entry>
+        <title>Services</title>
+        <variable>services</variable>
+        <filename>services.html</filename>
+    </entry>
+    <entry>
+        <title>Contact</title>
+        <variable>contact</variable>
+        <filename>contact.html</filename>
+    </entry>
+    <entry>
+        <title>Blog</title>
+        <variable>blog</variable>
+        <filename>blog.php</filename>
+    </entry>
+</navigation>

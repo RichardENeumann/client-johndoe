@@ -1,0 +1,25 @@
+/* Desktop screen size adjustments */
+@media only screen and (min-width: 1280px) { 
+    html {
+        display: flex;
+        justify-content: center;
+    }
+    body {
+        margin: 24px;
+        width: 65%;
+        box-shadow: 0px 16px 16px -16px #444444;
+    }
+    header {
+        padding: 8px 24px 8px 48px;
+    }
+    nav {
+        padding: 4px 96px;
+        justify-content: left;
+    }
+    main {
+        padding: 48px 96px;
+    }
+    .bild-gross {
+    /*    width: 50%; */
+    }
+}

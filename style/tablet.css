@@ -1,0 +1,36 @@
+/* Tablet screen size adjustments */
+@media screen and (min-width: 600px) { 
+    header {
+        padding: 4px 12px 4px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .contact {
+        display: block;
+    }
+    nav {
+        padding: 4px 36px;
+    }
+    main {
+        padding: 48px 24px;
+    }
+    .bild-gross {
+        width: 70%;
+        margin: 24px;
+    }
+    /* Gestaltung der Zitatblöcke 
+        width: 65%;
+    }
+    .zitat-klein {
+        margin-top: 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 64px;
+    }
+    .logos>img {
+        width: auto;
+    } 
+    */
+}

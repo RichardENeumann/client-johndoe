@@ -1,0 +1,149 @@
+@font-face {
+    font-family: "Candara";
+    src: url("Candara.ttf");
+}
+main a {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+main a:hover {
+    text-decoration: none;
+    color: white;
+}
+main a:visited {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+main a:visited:hover {
+    text-decoration: none;
+    color: white;
+}
+/* Styling of links in navigation section */
+a {
+    text-decoration: none;
+    color: #303030;
+}
+a:hover {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+a:visited {
+    text-decoration: none;
+    color: #303030;
+}
+a:visited:hover {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+h1 {
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+h2 {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+h3 {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1rem;
+}
+img { 
+    margin: 16px;
+}
+html {
+    font-family: "Candara", Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    color: #a0a0a0;
+    background-color: #a0a0a0;
+}
+body {
+    background-color: white;
+}
+header {
+    padding: 4px;
+}
+.title {
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: lighter;
+    font-size: 3rem;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(to top, #303030 16%, #D4D4D4 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.contact {
+    text-align: right;
+    display: none;
+}
+nav {
+    padding: 4px 8px;
+    border-top: 1px #800000 solid;
+    border-bottom: 1px #800000 solid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+}
+main {
+    padding: 32px 12px;
+    min-height: 400px;
+    color: white;
+    background-color: darkcyan;
+    text-align: center;
+}
+blockquote {
+    font-family: "Harrington";
+    font-size: 1.3rem;
+}
+.legal {
+    text-align: justify;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+/* Blog design */
+.blog {
+    font-size: 1rem;
+}
+.blog hr {
+    border: none;
+    background: #444444;
+    height: 1px;
+    margin: 16px 0px;
+}
+.blog h2 {
+    margin-bottom: 8px;
+}
+.blog-entry {
+    text-align: justify;
+}
+.entry-info {
+    text-indent: 16px;
+    color: #a0a0a0;
+}
+/* Footer design */
+.logos {
+    padding: 8px;
+    border-top: 1px #800000 solid;
+    border-bottom: 1px #800000 solid;
+    display: flex;
+    justify-content: space-evenly;
+}
+.logos > img {
+    width: 20%;
+    margin: 4px;
+}
+footer {
+    padding: 4px;
+    background-color: white;
+    text-align: center;
+}
+

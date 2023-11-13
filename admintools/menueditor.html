@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit the navigation menu</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html {
+            background-color: #303030;
+            color: white;
+        }   
+        body {
+            margin: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        fieldset {
+            margin: 1rem;
+            padding: .5rem;
+        }
+        label::after {
+            content: "\a";
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit the navigation menu</h1>
+    <input type="file" accept=".xml" id="openFile">
+    <form onsubmit="prepareData(this)" id="editform">
+        <fieldset>
+            <input type="text" maxlength=25 name="title-0" id="title-0">
+            <label for="title-0">Item name</label>
+            <input type="text" maxlength=25 name="variable-0" id="variable-0" pattern="[A-Za-z]+">
+            <label for="variable-0">Variable name</label>
+            <input type="text" maxlength=35 name="filename-0" id="filename-0" pattern="[A-Za-z]+\.html">
+            <label for="filename-0">File name</label>
+        </fieldset>
+        <input type="submit" value="Save">
+    </form>
+</body>
+<script>
+    "use strict";
+    let masterList = [];
+    let fileSelector = document.getElementById("openFile");
+    fileSelector.addEventListener("change", (event) => {
+        document.getElementById("editform").textContent = "";
+        const loadedFile = event.target.files[0];
+        let reader = new FileReader();
+        reader.addEventListener("load", () => { 
+            makeMasterList(reader);
+            masterList.forEach((e, i) => createEntry(i));
+        });
+        reader.readAsText(loadedFile);
+    });
+    function makeMasterList(reader) {
+        let parser = new DOMParser();
+        let parsedXML = parser.parseFromString(reader.result, "text/xml");
+        let parsedArray = Array.from(parsedXML.getElementsByTagName("unterpunkt"));
+        for (let i = 0; i < parsedArray.length; i++) {
+            masterList[i] = { 
+                "title": decodeURIComponent(parsedArray[i].getElementsByTagName("titel")[0].textContent), 
+                "variable": decodeURIComponent(parsedArray[i].getElementsByTagName("variable")[0].textContent),
+                "filename": decodeURIComponent(parsedArray[i].getElementsByTagName("dateiname")[0].textContent)
+            };
+        }    
+    }
+    function createEntry(i) {
+        let fset = document.createElement("fieldset");
+        let title = document.createElement("input");
+            title.type = "text";
+            title.maxLength = 25;
+            title.name = "title-" + i;
+            title.id = "title-" + i;
+            title.value = masterList[i].title;
+        let tLabel = document.createElement("label");
+            tLabel.for = "title-" + i;
+            tLabel.textContent = "Name";
+        let variable = document.createElement("input");
+            variable.type = "text";
+            variable.maxLength = 25;
+            variable.name = "variable-" + i;
+            variable.id = "variable-" + i;
+            variable.pattern = "[A-Za-z]+";
+            variable.value = masterList[i].variable;
+        let vLabel = document.createElement("label");
+            vLabel.for = "variable-" + i;
+            vLabel.textContent = "Variablenname";
+        let filename = document.createElement("input");
+            filename.type = "text";
+            filename.maxLength = 35;
+            filename.name = "filename-" + i;
+            filename.id = "filename-" + i;
+            filename.pattern = "[A-Za-z]+\.html";
+            filename.value = masterList[i].filename;
+        let fLabel = document.createElement("label");
+            fLabel.for = "title-" + i;
+            fLabel.textContent = "Dateiname";
+        fset.appendChild(title);
+        fset.appendChild(tLabel);
+        fset.appendChild(variable);
+        fset.appendChild(vLabel);
+        fset.appendChild(filename);
+        fset.appendChild(fLabel);
+        document.getElementById("editform").appendChild(fset);
+    }
+    // not supported in Safara and Firefox yet:
+    function saveFile(filename, text) {
+        const fileHandle = window.showSaveFilePicker({suggestedName: filename});
+        const stream = fileHandle.createWritable();
+        stream.write(text);
+        stream.close();
+    }
+    // works on all browsers
+    function downloadEntry(filename, text) {
+        let element = document.createElement("a");
+        element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+        element.setAttribute("download", filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+</script>
+</html>

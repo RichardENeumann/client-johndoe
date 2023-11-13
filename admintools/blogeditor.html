@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create or edit a blog entry</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html {
+            background-color: #303030;
+            color: white;
+        }   
+        body {
+            margin: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, label, textarea, h1, span {
+            display: block;
+            margin: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Create or edit a blog entry</h1>
+    <br>
+    <input type="file" accept=".xml" id="openFile">
+    <br>
+    <form onsubmit="prepareData(this)">
+        <label for="entrynumber">Entry number [0-999]</label>
+        <input type="number" min=0 max="999" name="entrynumber" id="entrynumber">
+        <label for="author">Author</label>
+        <input type="text" size=30 maxlength=30 name="author" id="author">
+        <label for="title">Title</label>
+        <input type="text" size=80 maxlength=80 name="title" id="title">
+        <label for="date">Date</label>
+        <input type="date" name="date" id="date">
+        <label for="teasertext">Teaser text</label>
+        <textarea rows=8 cols=80 name="teasertext" id="teasertext" onBlur="focusElement(this.id)"></textarea>
+        <span>
+            <button type="button" id="addLink" onclick="addTag(this.id)">Link</button>
+            <button type="button" id="addItalic" onclick="addTag(this.id)">Italic</button>
+            <button type="button" id="addBold" onclick="addTag(this.id)">Bold</button>
+            <button type="button" id="addLinebreak" onclick="addTag(this.id)">Line break</button>
+        </span>
+        <label for="content">Blog entry</label>
+        <textarea rows=20 cols=80 name="content" id="content" onBlur="focusElement(this.id)"></textarea>
+        <input type="submit" value="Create entry">
+      </form>
+</body>
+<script>
+    "use strict";
+    let focusedElement = "teasertext";
+    const formEntryNumber = document.getElementById("entrynumber");
+    const formAuthor = document.getElementById("author");
+    const formTitle = document.getElementById("title");
+    const formDate = document.getElementById("date");
+    const formTeaser = document.getElementById("teasertext");
+    const formContent = document.getElementById("content");
+    const fileSelector = document.getElementById("openFile");
+    // Set date field to current date
+    let today = new Date();
+    formDate.value = 
+        today.getFullYear().toString() + '-' +
+        (today.getMonth() + 1).toString().padStart(2, 0) + '-' + 
+        today.getDate().toString().padStart(2, 0);
+    // On loading an XML file populate fields with content
+    fileSelector.addEventListener("change", (event) => {
+        const loadedFile = event.target.files[0];
+        const entryNumber = event.target.files[0].name.slice(7, 10);
+        let reader = new FileReader();
+        reader.addEventListener("load", () => { 
+            let parser = new DOMParser();
+            let parsedXML = parser.parseFromString(reader.result, "text/xml");
+            formEntryNumber.value = entryNumber;
+            formAuthor.value = decodeURIComponent(parsedXML.getElementsByTagName("author")[0].childNodes[0].nodeValue);
+            formTitle.value = decodeURIComponent(parsedXML.getElementsByTagName("title")[0].childNodes[0].nodeValue);
+            formDate.value = decodeURIComponent(parsedXML.getElementsByTagName("date")[0].childNodes[0].nodeValue);
+            formTeaser.value = decodeURIComponent(parsedXML.getElementsByTagName("teasertext")[0].childNodes[0].nodeValue);
+            formContent.value = decodeURIComponent(parsedXML.getElementsByTagName("content")[0].childNodes[0].nodeValue);
+        });
+        reader.readAsText(loadedFile);
+    });
+    // Encode and prepare entered data for saving
+    function prepareData(formData) {
+        let fileName = "entry" + formData["entrynumber"].value.padStart(3, "0");
+        let xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<blogentry>\n";
+        xmlData += "<author>" + encodeURIComponent(formData["author"].value) + "</author>\n";
+        xmlData += "<title>" + encodeURIComponent(formData["title"].value) + "</title>\n";
+        xmlData += "<date>" + encodeURIComponent(formData["date"].value) + "</date>\n";
+        xmlData += "<teasertext>" + encodeURIComponent(formData["teasertext"].value) + "</teasertext>\n";    
+        xmlData += "<content>" + encodeURIComponent(formData["content"].value) + "</content>\n";        
+        xmlData += "</blogentry>";
+        downloadEntry(fileName + ".xml", xmlData);
+        //saveFile(fileName + ".xml", xmlData);
+    }
+    // Does not work in Safari or Firefox
+    function saveFile(filename, text) {
+        const fileHandle = window.showSaveFilePicker({suggestedName: filename});
+        const stream = fileHandle.createWritable();
+        stream.write(text);
+        stream.close();
+    }
+    // Works in all browsers
+    function downloadEntry(filename, text) {
+        let element = document.createElement("a");
+        element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+        element.setAttribute("download", filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+    function addTag(clickID) {
+        let target = document.getElementById(focusedElement);
+        let newText = "";
+        switch(clickID) {
+            case "addLink":
+                newText = "<a href=\"https://www.example.com\">Link title</a>";
+                break;
+            case "addItalic":
+                newText = "<i></i>";
+                break;
+            case "addBold":
+                newText = "<em></em>";
+                break;
+            case "addLinebreak":
+                newText = "<br>";
+                break;
+            default:
+                newText = "";
+                break;
+        }
+        target.value = target.value.substring(0, target.selectionStart) + 
+                        newText + 
+                        target.value.substring(target.selectionEnd, target.value.length);
+        target.selectionStart = target.selectionEnd = target.selectionStart + newText.length;
+        target.focus();
+    }
+    function focusElement(id) {
+        focusedElement = id;
+    }
+</script>
+</html>
