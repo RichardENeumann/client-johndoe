@@ -64,9 +64,9 @@
         let parsedArray = Array.from(parsedXML.getElementsByTagName("unterpunkt"));
         for (let i = 0; i < parsedArray.length; i++) {
             masterList[i] = { 
-                "title": decodeURIComponent(parsedArray[i].getElementsByTagName("titel")[0].textContent), 
+                "title": decodeURIComponent(parsedArray[i].getElementsByTagName("title")[0].textContent), 
                 "variable": decodeURIComponent(parsedArray[i].getElementsByTagName("variable")[0].textContent),
-                "filename": decodeURIComponent(parsedArray[i].getElementsByTagName("dateiname")[0].textContent)
+                "filename": decodeURIComponent(parsedArray[i].getElementsByTagName("filename")[0].textContent)
             };
         }    
     }
@@ -80,7 +80,7 @@
             title.value = masterList[i].title;
         let tLabel = document.createElement("label");
             tLabel.for = "title-" + i;
-            tLabel.textContent = "Name";
+            tLabel.textContent = "Item name";
         let variable = document.createElement("input");
             variable.type = "text";
             variable.maxLength = 25;
@@ -90,7 +90,7 @@
             variable.value = masterList[i].variable;
         let vLabel = document.createElement("label");
             vLabel.for = "variable-" + i;
-            vLabel.textContent = "Variablenname";
+            vLabel.textContent = "Variable name";
         let filename = document.createElement("input");
             filename.type = "text";
             filename.maxLength = 35;
@@ -100,7 +100,7 @@
             filename.value = masterList[i].filename;
         let fLabel = document.createElement("label");
             fLabel.for = "title-" + i;
-            fLabel.textContent = "Dateiname";
+            fLabel.textContent = "File name";
         fset.appendChild(title);
         fset.appendChild(tLabel);
         fset.appendChild(variable);
