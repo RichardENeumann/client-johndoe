@@ -15,9 +15,13 @@
         }   
         body {
             margin: 24px;
+        }
+        form {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            flex-direction: row;
             align-items: center;
+            gap: 10px;
         }
         fieldset {
             margin: 1rem;
@@ -28,26 +32,33 @@
             white-space: pre;
         }
         .container {
+            flex: 0 1 auto;
             border: 1px solid white;
+            border-radius: 1rem;
             display: grid;
-            grid-template: 1fr 1fr / 1fr 3fr;
+            grid-template-columns: 1fr 15fr 1fr;
+        }
+        .container > button {
+            margin: 5px;
+            color: grey;
+            font-size: 1rem;
+            border: none;
+            background-color: transparent;
+        }
+        .container > button:hover {
+            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Edit the navigation menu</h1>
-    <input type="file" accept=".xml" id="openFile">
-    <form onsubmit="prepareData(this)" id="editform">
-        <fieldset>
-            <input type="text" maxlength=25 name="title-0" id="title-0">
-            <label for="title-0">Item name</label>
-            <input type="text" maxlength=25 name="variable-0" id="variable-0" pattern="[A-Za-z]+">
-            <label for="variable-0">Variable name</label>
-            <input type="text" maxlength=35 name="filename-0" id="filename-0" pattern="[A-Za-z]+\.html">
-            <label for="filename-0">File name</label>
-        </fieldset>
-        <input type="submit" value="Save">
-    </form>
+    <header>
+        <h1>Edit Navigation</h1>
+        <input type="file" accept=".xml" id="openFile">
+        <button type="button" onclick="prepareData()">Save</button>
+    </header>
+    <main>
+        <form onsubmit="" id="editform"></form>
+    </main>
 </body>
 <script>
     "use strict";
@@ -87,8 +98,8 @@
             title.id = "title-" + i;
             title.value = masterList[i].title;
         let tLabel = document.createElement("label");
-            tLabel.for = "title-" + i;
-            tLabel.textContent = "Item name";
+            tLabel.htmlFor = "title-" + i;
+            tLabel.textContent = "Title";
         let variable = document.createElement("input");
             variable.type = "text";
             variable.maxLength = 25;
@@ -97,36 +108,39 @@
             variable.pattern = "[A-Za-z]+";
             variable.value = masterList[i].variable;
         let vLabel = document.createElement("label");
-            vLabel.for = "variable-" + i;
-            vLabel.textContent = "Variable name";
+            vLabel.htmlFor = "variable-" + i;
+            vLabel.textContent = "Variable";
         let filename = document.createElement("input");
             filename.type = "text";
             filename.maxLength = 35;
             filename.name = "filename-" + i;
             filename.id = "filename-" + i;
-            filename.pattern = "[A-Za-z]+\.html";
+            filename.pattern = "[A-Za-z]+\.[html|php]";
             filename.value = masterList[i].filename;
         let fLabel = document.createElement("label");
-            fLabel.for = "title-" + i;
-            fLabel.textContent = "File name";
-        let btup = document.createElement("button");
-            btup.id = "btup-" + i;
-            btup.textContent = "Up";
-            btup.type = "button";
-        let btdn = document.createElement("button");
-            btdn.id = "btdn-" + i;
-            btdn.textContent = "Down";
-            btdn.type = "button";
+            fLabel.htmlFor = "title-" + i;
+            fLabel.textContent = "Filename";
+        let btrt = document.createElement("button");
+            btrt.id = "btrt-" + i;
+            btrt.textContent = "▶";
+            btrt.type = "button";
+        let btlf = document.createElement("button");
+            btlf.id = "btlf-" + i;
+            btlf.textContent = "◀";
+            btlf.type = "button";
         fset.appendChild(title);
         fset.appendChild(tLabel);
         fset.appendChild(variable);
         fset.appendChild(vLabel);
         fset.appendChild(filename);
         fset.appendChild(fLabel);
-        cont.appendChild(btup);
+        cont.appendChild(btlf);
         cont.appendChild(fset);
-        cont.appendChild(btdn);
+        cont.appendChild(btrt);
         document.getElementById("editform").appendChild(cont);
+    }
+    function prepareData() {
+        return 0;
     }
     // not supported in Safara and Firefox yet:
     function saveFile(filename, text) {
