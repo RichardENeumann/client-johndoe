@@ -27,6 +27,11 @@
             content: "\a";
             white-space: pre;
         }
+        .container {
+            border: 1px solid white;
+            display: grid;
+            grid-template: 1fr 1fr / 1fr 3fr;
+        }
     </style>
 </head>
 <body>
@@ -61,7 +66,7 @@
     function makeMasterList(reader) {
         let parser = new DOMParser();
         let parsedXML = parser.parseFromString(reader.result, "text/xml");
-        let parsedArray = Array.from(parsedXML.getElementsByTagName("unterpunkt"));
+        let parsedArray = Array.from(parsedXML.getElementsByTagName("entry"));
         for (let i = 0; i < parsedArray.length; i++) {
             masterList[i] = { 
                 "title": decodeURIComponent(parsedArray[i].getElementsByTagName("title")[0].textContent), 
@@ -71,6 +76,9 @@
         }    
     }
     function createEntry(i) {
+        let cont = document.createElement("div");
+            cont.id = "container-" + i;
+            cont.classList.add("container");
         let fset = document.createElement("fieldset");
         let title = document.createElement("input");
             title.type = "text";
@@ -101,13 +109,24 @@
         let fLabel = document.createElement("label");
             fLabel.for = "title-" + i;
             fLabel.textContent = "File name";
+        let btup = document.createElement("button");
+            btup.id = "btup-" + i;
+            btup.textContent = "Up";
+            btup.type = "button";
+        let btdn = document.createElement("button");
+            btdn.id = "btdn-" + i;
+            btdn.textContent = "Down";
+            btdn.type = "button";
         fset.appendChild(title);
         fset.appendChild(tLabel);
         fset.appendChild(variable);
         fset.appendChild(vLabel);
         fset.appendChild(filename);
         fset.appendChild(fLabel);
-        document.getElementById("editform").appendChild(fset);
+        cont.appendChild(btup);
+        cont.appendChild(fset);
+        cont.appendChild(btdn);
+        document.getElementById("editform").appendChild(cont);
     }
     // not supported in Safara and Firefox yet:
     function saveFile(filename, text) {
